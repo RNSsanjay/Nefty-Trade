@@ -137,12 +137,12 @@ const PaperTrade = () => {
       // Place orders via API
       for (const item of basket) {
         const orderData = {
+          symbol: selectedIndex,
           strike: item.strike,
-          optionType: item.optionType,
-          action: item.action,
+          type: item.optionType,
+          expiry: item.expiryDate,
+          side: item.action,
           quantity: item.quantity,
-          price: item.price,
-          expiryDate: item.expiryDate,
           orderType: item.orderType,
           limitPrice: item.limitPrice,
         };
