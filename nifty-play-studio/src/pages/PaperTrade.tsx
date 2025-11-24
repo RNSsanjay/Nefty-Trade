@@ -223,7 +223,7 @@ const PaperTrade = () => {
                             size="sm"
                             variant="outline"
                             className="h-7 w-7 p-0 text-xs font-semibold text-buy hover:bg-success-light"
-                            onClick={() => addToBasket(option.strike, 'CE', 'BUY', option.ce.ltp)}
+                            onClick={() => addToBasket(option.strike, 'CE', 'BUY', option.ce?.ltp || 0)}
                           >
                             B
                           </Button>
@@ -231,16 +231,16 @@ const PaperTrade = () => {
                             size="sm"
                             variant="outline"
                             className="h-7 w-7 p-0 text-xs font-semibold text-sell hover:bg-destructive-light"
-                            onClick={() => addToBasket(option.strike, 'CE', 'SELL', option.ce.ltp)}
+                            onClick={() => addToBasket(option.strike, 'CE', 'SELL', option.ce?.ltp || 0)}
                           >
                             S
                           </Button>
                         </div>
                       </td>
                       <td className="px-3 py-2 text-right">
-                        <div className="text-sm font-semibold text-foreground">{option.ce.ltp.toFixed(2)}</div>
-                        <div className={cn("text-xs", option.ce.change >= 0 ? "text-success-text" : "text-destructive-text")}>
-                          {option.ce.change >= 0 ? '+' : ''}{option.ce.changePercent.toFixed(2)}%
+                        <div className="text-sm font-semibold text-foreground">{option.ce?.ltp?.toFixed(2) || 'N/A'}</div>
+                        <div className={cn("text-xs", option.ce?.change >= 0 ? "text-success-text" : "text-destructive-text")}>
+                          {option.ce?.change >= 0 ? '+' : ''}{option.ce?.changePercent?.toFixed(2) || 'N/A'}%
                         </div>
                       </td>
                       <td className="px-3 py-2 text-center">
@@ -249,9 +249,9 @@ const PaperTrade = () => {
                         </div>
                       </td>
                       <td className="px-3 py-2 text-left">
-                        <div className="text-sm font-semibold text-foreground">{option.pe.ltp.toFixed(2)}</div>
-                        <div className={cn("text-xs", option.pe.change >= 0 ? "text-success-text" : "text-destructive-text")}>
-                          {option.pe.change >= 0 ? '+' : ''}{option.pe.changePercent.toFixed(2)}%
+                        <div className="text-sm font-semibold text-foreground">{option.pe?.ltp?.toFixed(2) || 'N/A'}</div>
+                        <div className={cn("text-xs", option.pe?.change >= 0 ? "text-success-text" : "text-destructive-text")}>
+                          {option.pe?.change >= 0 ? '+' : ''}{option.pe?.changePercent?.toFixed(2) || 'N/A'}%
                         </div>
                       </td>
                       <td className="px-3 py-2">
@@ -260,7 +260,7 @@ const PaperTrade = () => {
                             size="sm"
                             variant="outline"
                             className="h-7 w-7 p-0 text-xs font-semibold text-buy hover:bg-success-light"
-                            onClick={() => addToBasket(option.strike, 'PE', 'BUY', option.pe.ltp)}
+                            onClick={() => addToBasket(option.strike, 'PE', 'BUY', option.pe?.ltp || 0)}
                           >
                             B
                           </Button>
@@ -268,7 +268,7 @@ const PaperTrade = () => {
                             size="sm"
                             variant="outline"
                             className="h-7 w-7 p-0 text-xs font-semibold text-sell hover:bg-destructive-light"
-                            onClick={() => addToBasket(option.strike, 'PE', 'SELL', option.pe.ltp)}
+                            onClick={() => addToBasket(option.strike, 'PE', 'SELL', option.pe?.ltp || 0)}
                           >
                             S
                           </Button>
