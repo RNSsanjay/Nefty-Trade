@@ -1,5 +1,19 @@
 const API_BASE_URL = 'http://localhost:5000/api';
 
+interface OrderData {
+    symbol?: string;
+    strike?: number;
+    type?: 'CE' | 'PE' | 'INDEX';
+    expiry?: string;
+    side: 'BUY' | 'SELL';
+    quantity: number;
+    orderType?: string;
+    limitPrice?: number;
+    stopPrice?: number;
+    sessionId?: string;
+    tags?: string[];
+}
+
 class ApiService {
     private async request(endpoint: string, options?: RequestInit) {
         const url = `${API_BASE_URL}${endpoint}`;
@@ -58,7 +72,7 @@ class ApiService {
     }
 
     // Paper trading endpoints
-    async placeOrder(orderData: any) {
+    async placeOrder(orderData: OrderData) {
         return this.request('/papertrade/orders', {
             method: 'POST',
             body: JSON.stringify(orderData),

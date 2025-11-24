@@ -24,6 +24,7 @@ import { BasketItem } from "@/utils/mockData";
 import { useRealtimeMarketData } from "@/hooks/useRealtimeMarketData";
 import { apiService } from "@/lib/api";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 const PaperTrade = () => {
   const [selectedIndex, setSelectedIndex] = useState("NIFTY");
@@ -32,7 +33,7 @@ const PaperTrade = () => {
   const [sameQty, setSameQty] = useState(true);
   const [defaultQty, setDefaultQty] = useState(1);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [expiryDates, setExpiryDates] = useState<any[]>([]);
+  const [expiryDates, setExpiryDates] = useState<{ label: string; value: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
   const { niftyData, optionChain, lastUpdate } = useRealtimeMarketData(3000);
@@ -528,9 +529,5 @@ const PaperTrade = () => {
     </div>
   );
 };
-
-function cn(...classes: any[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default PaperTrade;
