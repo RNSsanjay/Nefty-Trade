@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Base colors - professional financial dashboard */
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+
+    /* Card surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    /* Popover surfaces */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary - Professional blue for trading actions */
+    --primary: 211 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Subtle gray for secondary actions */
+    --secondary: 210 16% 93%;
+    --secondary-foreground: 222 47% 11%;
+
+    /* Muted - Subtle backgrounds and text */
+    --muted: 210 16% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Accent - Highlight color for selected items */
+    --accent: 211 100% 96%;
+    --accent-foreground: 211 100% 40%;
+
+    /* Success - Green for gains */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 142 76% 96%;
+    --success-text: 142 76% 30%;
+
+    /* Destructive - Red for losses */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --destructive-light: 0 84% 96%;
+    --destructive-text: 0 72% 51%;
+
+    /* Warning - Orange for warnings */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 211 100% 50%;
+
+    /* Border radius */
+    --radius: 0.5rem;
+
+    /* Trading specific colors */
+    --buy: 142 76% 36%;
+    --sell: 0 72% 51%;
+    --neutral: 215 16% 47%;
+
+    /* Table and data display */
+    --table-header: 210 16% 93%;
+    --table-row-hover: 211 100% 98%;
+    --table-border: 214 32% 91%;
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 13%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 13%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 211 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 33% 18%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 18%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 18%;
+    --accent-foreground: 211 100% 60%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 142 76% 15%;
+    --success-text: 142 76% 45%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --destructive-light: 0 84% 15%;
+    --destructive-text: 0 72% 65%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 211 100% 50%;
+    --buy: 142 76% 36%;
+    --sell: 0 72% 51%;
+    --neutral: 215 20% 65%;
+    --table-header: 217 33% 18%;
+    --table-row-hover: 217 33% 20%;
+    --table-border: 217 33% 18%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
