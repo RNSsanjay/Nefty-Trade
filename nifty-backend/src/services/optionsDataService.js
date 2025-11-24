@@ -16,7 +16,7 @@ class OptionsDataService {
     try {
       const cacheKey = `option_${strike}_${type}_${expiry}`;
       const now = Date.now();
-      
+
       // Check cache first (30 seconds)
       if (this.cache.has(cacheKey)) {
         const cached = this.cache.get(cacheKey);
@@ -27,10 +27,10 @@ class OptionsDataService {
 
       // Get option chain data
       const chainData = await this.getOptionChain();
-      
+
       // Find the specific option
       const optionData = this.findOptionInChain(chainData, strike, type, expiry);
-      
+
       if (!optionData) {
         throw new Error(`Option not found: ${strike} ${type} ${expiry}`);
       }
@@ -54,7 +54,7 @@ class OptionsDataService {
   async getOptionChain() {
     try {
       const now = Date.now();
-      
+
       // Use cached chain data if available (60 seconds cache)
       if (this.optionChainCache && this.lastChainFetch) {
         if (now - this.lastChainFetch < 60000) {
@@ -72,7 +72,7 @@ class OptionsDataService {
       });
 
       const chainData = this.parseOptionChain(response.data);
-      
+
       // Cache the chain data
       this.optionChainCache = chainData;
       this.lastChainFetch = now;
@@ -80,12 +80,12 @@ class OptionsDataService {
       return chainData;
     } catch (error) {
       console.error('Error fetching option chain:', error.message);
-      
+
       // Return cached data if available
       if (this.optionChainCache) {
         return this.optionChainCache;
       }
-      
+
       // Fallback to mock data for development
       return this.generateMockOptionChain();
     }
@@ -98,7 +98,7 @@ class OptionsDataService {
     try {
       const options = [];
       const data = rawData.filtered || rawData.records || rawData;
-      
+
       if (!data || !data.data) {
         throw new Error('Invalid option chain data format');
       }
@@ -106,7 +106,7 @@ class OptionsDataService {
       data.data.forEach(item => {
         const strike = item.strikePrice;
         const expiry = item.expiryDate;
-        
+
         // Call Option (CE)
         if (item.CE) {
           options.push({
@@ -160,8 +160,8 @@ class OptionsDataService {
    */
   findOptionInChain(chainData, strike, type, expiry) {
     const expiryDate = new Date(expiry);
-    
-    return chainData.find(option => 
+
+    return chainData.find(option =>
       option.strike === parseInt(strike) &&
       option.type === type.toUpperCase() &&
       option.expiry.getTime() === expiryDate.getTime()
@@ -175,11 +175,11 @@ class OptionsDataService {
     const options = [];
     const basePrice = 19500; // Mock Nifty price
     const expiryDates = this.getNextExpiryDates(3);
-    
+
     // Generate strikes around base price
     for (let i = -10; i <= 10; i++) {
       const strike = basePrice + (i * 50);
-      
+
       expiryDates.forEach(expiry => {
         // CE options
         options.push({
@@ -228,11 +228,11 @@ class OptionsDataService {
   getNextExpiryDates(count = 3) {
     const dates = [];
     const today = new Date();
-    
+
     // Find next Tuesday
     let nextTuesday = new Date(today);
     nextTuesday.setDate(today.getDate() + (2 - today.getDay() + 7) % 7);
-    
+
     // If today is Tuesday and market hasn't closed, use today
     if (today.getDay() === 2 && today.getHours() < 15) {
       nextTuesday = new Date(today);
@@ -267,7 +267,7 @@ class OptionsDataService {
     const data = [];
     const startDate = new Date(date);
     const intervals = this.getIntervalPoints(startDate, interval);
-    
+
     intervals.forEach(timestamp => {
       data.push({
         strike: parseInt(strike),
@@ -298,7 +298,7 @@ class OptionsDataService {
     const points = [];
     const startOfDay = new Date(date);
     startOfDay.setHours(9, 15, 0, 0); // Market start
-    
+
     const endOfDay = new Date(date);
     endOfDay.setHours(15, 30, 0, 0); // Market end
 
@@ -325,7 +325,7 @@ class OptionsDataService {
       '1h': 60,
       'day': 375 // Market hours
     };
-    
+
     return mapping[interval] || 375;
   }
 
@@ -336,6 +336,67 @@ class OptionsDataService {
     this.cache.clear();
     this.optionChainCache = null;
     this.lastChainFetch = null;
+  }
+
+  /**
+   * Generate mock option chain for development
+   */
+  generateMockOptionChain() {
+    const options = [];
+    const currentPrice = 19500; // Mock Nifty price
+    const expiry = new Date();
+    expiry.setDate(expiry.getDate() + 7); // Next week expiry
+
+    // Generate strikes around current price
+    for (let i = -10; i <= 10; i++) {
+      const strike = currentPrice + (i * 100);
+
+      // Call Option (CE)
+      const cePrice = Math.max(0, currentPrice - strike + (Math.random() * 50));
+      options.push({
+        strike,
+        type: 'CE',
+        expiry,
+        ltp: parseFloat(cePrice.toFixed(2)),
+        open: parseFloat((cePrice * 0.95).toFixed(2)),
+        high: parseFloat((cePrice * 1.1).toFixed(2)),
+        low: parseFloat((cePrice * 0.9).toFixed(2)),
+        close: parseFloat((cePrice * 0.98).toFixed(2)),
+        volume: Math.floor(Math.random() * 10000),
+        oi: Math.floor(Math.random() * 50000),
+        change: parseFloat(((Math.random() - 0.5) * cePrice * 0.1).toFixed(2)),
+        changePercent: parseFloat(((Math.random() - 0.5) * 5).toFixed(2)),
+        iv: parseFloat((15 + Math.random() * 10).toFixed(2)),
+        delta: parseFloat((0.3 + Math.random() * 0.4).toFixed(3)),
+        gamma: parseFloat((0.001 + Math.random() * 0.01).toFixed(3)),
+        theta: parseFloat((-5 - Math.random() * 10).toFixed(2)),
+        vega: parseFloat((10 + Math.random() * 20).toFixed(2))
+      });
+
+      // Put Option (PE)
+      const pePrice = Math.max(0, strike - currentPrice + (Math.random() * 50));
+      options.push({
+        strike,
+        type: 'PE',
+        expiry,
+        ltp: parseFloat(pePrice.toFixed(2)),
+        open: parseFloat((pePrice * 0.95).toFixed(2)),
+        high: parseFloat((pePrice * 1.1).toFixed(2)),
+        low: parseFloat((pePrice * 0.9).toFixed(2)),
+        close: parseFloat((pePrice * 0.98).toFixed(2)),
+        volume: Math.floor(Math.random() * 10000),
+        oi: Math.floor(Math.random() * 50000),
+        change: parseFloat(((Math.random() - 0.5) * pePrice * 0.1).toFixed(2)),
+        changePercent: parseFloat(((Math.random() - 0.5) * 5).toFixed(2)),
+        iv: parseFloat((15 + Math.random() * 10).toFixed(2)),
+        delta: parseFloat((-0.7 + Math.random() * 0.4).toFixed(3)),
+        gamma: parseFloat((0.001 + Math.random() * 0.01).toFixed(3)),
+        theta: parseFloat((-5 - Math.random() * 10).toFixed(2)),
+        vega: parseFloat((10 + Math.random() * 20).toFixed(2))
+      });
+    }
+
+    return options;
   }
 }
 

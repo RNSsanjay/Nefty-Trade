@@ -46,7 +46,7 @@ export const useRealtimeMarketData = (updateInterval = 3000) => {
       const niftyResponse = await apiService.getLiveNiftyData();
       if (niftyResponse.success && niftyResponse.data) {
         setNiftyData({
-          value: niftyResponse.data.value || 0,
+          value: niftyResponse.data.ltp || 0,
           change: niftyResponse.data.change || 0,
           changePercent: niftyResponse.data.changePercent || 0,
           open: niftyResponse.data.open || 0,

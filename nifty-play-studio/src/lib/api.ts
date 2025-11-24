@@ -8,6 +8,7 @@ class ApiService {
                 'Content-Type': 'application/json',
                 ...options?.headers,
             },
+            mode: 'cors',
             ...options,
         });
 
