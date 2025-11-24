@@ -1,1 +1,28 @@
 # Nefty-Trade
+
+#backend-env
+
+# Environment Configuration
+NODE_ENV=development
+PORT=5000
+
+# MongoDB Configuration
+MONGODB_URI=mongodb+srv://ihub:ihub@harlee.6sokd.mongodb.net/
+MONGODB_TEST_URI=mongodb+srv://ihub:ihub@harlee.6sokd.mongodb.net/
+
+# API Configuration
+NSE_API_BASE_URL=http://nse-api-khaki.vercel.app:5000
+YAHOO_FINANCE_BASE_URL=https://query1.finance.yahoo.com
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# Cache Configuration
+CACHE_TTL_SECONDS=60
+DATA_REFRESH_INTERVAL_MS=30000
+
+# Paper Trading Configuration
+INITIAL_BALANCE=1000000
+MAX_POSITIONS=50
+
+# Logging
+LOG_LEVEL=info
