@@ -99,9 +99,9 @@ class Server {
       if (database.connect) await database.connect();
       if (startDataPolling) startDataPolling();
 
-      const server = this.app.listen(config.PORT || 4000, () => {
-        console.log(`🚀 Server running on port ${config.PORT || 4000} in ${config.NODE_ENV || 'development'} mode`);
-        console.log(`📊 Health check available at: http://localhost:${config.PORT || 4000}/health`);
+      const server = this.app.listen(config.PORT || 5000, () => {
+        console.log(`🚀 Server running on port ${config.PORT || 5000} in ${config.NODE_ENV || 'development'} mode`);
+        console.log(`📊 Health check available at: http://localhost:${config.PORT || 5000}/health`);
       });
 
       process.on('SIGTERM', () => {
