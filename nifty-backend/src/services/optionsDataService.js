@@ -17,10 +17,10 @@ class OptionsDataService {
       const cacheKey = `option_${strike}_${type}_${expiry}`;
       const now = Date.now();
 
-      // Check cache first (30 seconds)
+      // Check cache first (5 minutes)
       if (this.cache.has(cacheKey)) {
         const cached = this.cache.get(cacheKey);
-        if (now - cached.timestamp < 30000) {
+        if (now - cached.timestamp < 300000) {
           return cached.data;
         }
       }
@@ -55,19 +55,20 @@ class OptionsDataService {
     try {
       const now = Date.now();
 
-      // Use cached chain data if available (60 seconds cache)
+      // Use cached chain data if available (5 minutes cache)
       if (this.optionChainCache && this.lastChainFetch) {
-        if (now - this.lastChainFetch < 60000) {
+        if (now - this.lastChainFetch < 300000) {
           return this.optionChainCache;
         }
       }
 
       // Fetch from NSE API
-      const response = await axios.get(`${config.NSE_API_BASE_URL}/option-chain-nifty`, {
-        timeout: 15000,
+      const response = await axios.get(`${config.NSE_API_BASE_URL}/option-chain-nifty?symbol=NIFTY`, {
+        timeout: 30000,
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Referer': 'https://www.nseindia.com'
         }
       });
 

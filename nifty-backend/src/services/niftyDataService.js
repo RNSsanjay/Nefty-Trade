@@ -15,35 +15,44 @@ class NiftyDataService {
       const cacheKey = 'nifty_live';
       const now = Date.now();
 
-      // Check cache first (30 seconds cache)
+      // Check cache first (5 minutes cache to respect API limits)
       if (this.cache.has(cacheKey)) {
         const cached = this.cache.get(cacheKey);
-        if (now - cached.timestamp < 30000) {
+        if (now - cached.timestamp < 300000) {
           return cached.data;
         }
       }
 
-      const response = await axios.get(`${config.NSE_API_BASE_URL}/quote/NIFTY%2050`, {
-        timeout: 10000,
+      const response = await axios.get('https://www.alphavantage.co/query', {
+        params: {
+          function: 'GLOBAL_QUOTE',
+          symbol: 'NSEI',
+          apikey: config.ALPHA_VANTAGE_API_KEY
+        },
+        timeout: 30000,
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Accept': 'application/json'
         }
       });
 
-      const rawData = response.data;
+      const rawData = response.data['Global Quote'];
+
+      if (!rawData) {
+        throw new Error('Invalid response from Alpha Vantage: ' + JSON.stringify(response.data));
+      }
 
       // Transform to standardized format
       const liveData = {
         symbol: 'NIFTY 50',
-        ltp: parseFloat(rawData.lastPrice) || 0,
-        open: parseFloat(rawData.open) || 0,
-        high: parseFloat(rawData.dayHigh) || 0,
-        low: parseFloat(rawData.dayLow) || 0,
-        close: parseFloat(rawData.previousClose) || 0,
-        change: parseFloat(rawData.change) || 0,
-        changePercent: parseFloat(rawData.pChange) || 0,
-        volume: parseInt(rawData.totalTradedVolume) || 0,
+        ltp: parseFloat(rawData['05. price']) || 0,
+        open: parseFloat(rawData['02. open']) || 0,
+        high: parseFloat(rawData['03. high']) || 0,
+        low: parseFloat(rawData['04. low']) || 0,
+        close: parseFloat(rawData['08. previous close']) || 0,
+        change: parseFloat(rawData['09. change']) || 0,
+        changePercent: parseFloat(rawData['10. change percent'].replace('%', '')) || 0,
+        volume: parseInt(rawData['06. volume']) || 0,
         timestamp: new Date().toISOString(),
         marketStatus: this.getMarketStatus()
       };
@@ -109,7 +118,7 @@ class NiftyDataService {
           interval: yaInterval,
           includePrePost: false
         },
-        timeout: 10000
+        timeout: 30000
       });
 
       const result = response.data?.chart?.result?.[0];

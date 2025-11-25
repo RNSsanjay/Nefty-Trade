@@ -10,8 +10,10 @@ const config = {
   MONGODB_TEST_URI: process.env.MONGODB_TEST_URI || 'mongodb://localhost:27017/nifty-trading-test',
 
   // API Configuration
-  NSE_API_BASE_URL: process.env.NSE_API_BASE_URL || 'http://nse-api-khaki.vercel.app:5000',
+  NSE_API_BASE_URL: process.env.NSE_API_BASE_URL || 'https://www.nseindia.com/api',
   YAHOO_FINANCE_BASE_URL: process.env.YAHOO_FINANCE_BASE_URL || 'https://query1.finance.yahoo.com',
+  INDIAN_API_KEY: process.env.INDIAN_API_KEY || 'sk-live-ejcrcvOMm5ZiJsLji1Q74XprGzwQmXu6kHoFrgGx',
+  ALPHA_VANTAGE_API_KEY: process.env.ALPHA_VANTAGE_API_KEY || 'WCKR5UVDHBZ60MSP',
 
   // Rate Limiting
   RATE_LIMIT_WINDOW_MS: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 900000, // 15 minutes
